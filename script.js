@@ -94,7 +94,7 @@ const financeService = {
   },
 
   getMonthName(date) {
-    return date.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    return date.toLocaleDateString('pt-BR', { month: 'long' });
   },
 
   ensureMonthData(key) {
@@ -422,12 +422,6 @@ function showTab(tab) {
   financeService.state.currentTab = tab;
   document.querySelectorAll('.view-section').forEach(section => section.classList.add('hidden'));
   document.querySelectorAll('.nav-item').forEach(button => button.classList.toggle('active', button.dataset.tab === tab));
-  elements.pageTitle.textContent = {
-    summary: 'Resumo',
-    accounts: 'Contas',
-    incomes: 'Receitas',
-    history: 'Histórico'
-  }[tab] || 'Resumo';
 
   const selected = document.getElementById(`${tab}View`);
   if (selected) selected.classList.remove('hidden');
