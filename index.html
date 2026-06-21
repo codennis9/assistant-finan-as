@@ -1,0 +1,326 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+  <title>Meu Controle Financeiro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="app-shell">
+
+    <!-- ================= HEADER ================= -->
+    <header class="top-bar">
+      <div>
+        <p class="label">Olá, bem vindo</p>
+        <h1 id="pageTitle">Copiloto financeiro</h1>
+        <p id="monthLabel" class="month-label">Outubro 2025</p>
+      </div>
+
+      <div class="month-controls">
+        <button id="prevMonth" type="button" aria-label="Mês anterior">◀</button>
+        <button id="nextMonth" type="button" aria-label="Próximo mês">▶</button>
+      </div>
+    </header>
+
+    <!-- ================= RESUMO ================= -->
+    <section id="summaryView" class="view-section">
+      <section class="hero-balance">
+        <div>
+          <span>Saldo disponível</span>
+          <h2 id="balanceValue">R$ 0,00</h2>
+        </div>
+
+        <div class="balance-info">
+          <div>
+            <small>Entradas</small>
+            <strong id="totalIncome">R$ 0,00</strong>
+          </div>
+
+          <div>
+            <small>Saídas</small>
+            <strong id="totalExpense">R$ 0,00</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="quick-stats" aria-label="Indicadores financeiros">
+
+        <article class="stat-card">
+          <span>A receber</span>
+          <strong id="pendingIncome">R$ 0,00</strong>
+        </article>
+
+        <article class="stat-card">
+          <span>Pendencias</span>
+          <strong id="pendingExpense">R$ 0,00</strong>
+        </article>
+
+        <article class="stat-card">
+          <span>Projeção</span>
+          <strong id="projectionValue">R$ 0,00</strong>
+        </article>
+
+      </section>
+
+      <section class="finance-progress">
+        <div class="progress-title">
+          <p>Orçamento utilizado</p>
+          <strong id="progressLabel">0%</strong>
+        </div>
+
+        <div class="progress-track">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+
+        <p id="progressNote" class="progress-note">
+          Receitas estimadas R$ 0,00 • Gastos R$ 0,00
+        </p>
+      </section>
+
+      <div class="section-block">
+        <div class="section-header compact">
+          <p>Últimos lançamentos</p>
+          <span id="summaryCount">0 registros</span>
+        </div>
+
+        <div id="summaryList" class="list-block"></div>
+      </div>
+    </section>
+
+    <!-- ================= CONTAS ================= -->
+    <section id="accountsView" class="view-section hidden">
+
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <p>Contas Fixas</p>
+            <span id="fixedCount">0 itens</span>
+          </div>
+        </div>
+
+        <div id="fixedList" class="list-block"></div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <p>Contas Variáveis</p>
+            <span id="variableCount">0 itens</span>
+          </div>
+        </div>
+
+        <div id="variableList" class="list-block"></div>
+      </div>
+
+    </section>
+
+    <!-- ================= RECEITAS ================= -->
+    <section id="incomesView" class="view-section hidden">
+
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <p>Receitas</p>
+            <span id="incomeCount">0 itens</span>
+          </div>
+        </div>
+
+        <div id="incomeList" class="list-block"></div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <p>Dinheiro a Receber</p>
+            <span id="receiveCount">0 itens</span>
+          </div>
+        </div>
+
+        <div id="receiveList" class="list-block"></div>
+      </div>
+
+    </section>
+
+    <!-- ================= HISTÓRICO ================= -->
+    <section id="historyView" class="view-section hidden">
+      <div class="section-block">
+        <div class="section-header compact">
+          <p>Meses Salvos</p>
+        </div>
+
+        <div id="historyList" class="list-block"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= BOTÃO FLUTUANTE ================= -->
+  <button
+    id="fabButton"
+    class="fab"
+    type="button"
+    aria-label="Adicionar lançamento"
+  >
+    +
+  </button>
+
+  <aside id="fabMenu" class="fab-menu hidden">
+    <button type="button" data-action="income">
+      Nova receita
+    </button>
+
+    <button type="button" data-action="receive">
+      Recebimentos
+    </button>
+
+    <button type="button" data-action="expense">
+      Nova conta
+    </button>
+  </aside>
+
+  <!-- ================= MENU INFERIOR ================= -->
+  <nav
+    class="bottom-nav"
+    role="navigation"
+    aria-label="Menu principal"
+  >
+
+    <button class="nav-item active" data-tab="summary" type="button">
+      Resumo
+    </button>
+
+    <button class="nav-item" data-tab="accounts" type="button">
+      Contas
+    </button>
+
+    <button class="nav-item" data-tab="incomes" type="button">
+      Receitas
+    </button>
+
+    <button class="nav-item" data-tab="history" type="button">
+      Histórico
+    </button>
+
+  </nav>
+
+  <!-- ================= MODAL ================= -->
+  <div id="entryModal" class="modal hidden">
+
+    <div class="modal-card">
+
+      <header class="modal-header">
+        <h2 id="modalTitle">Novo lançamento</h2>
+
+        <button
+          id="closeModal"
+          type="button"
+          aria-label="Fechar"
+        >
+          ×
+        </button>
+      </header>
+
+      <form id="entryForm">
+
+        <input
+          id="entryType"
+          type="hidden"
+          value="income"
+        >
+
+        <div class="form-row">
+          <label for="entryCategory">Tipo</label>
+
+          <select id="entryCategory" required>
+            <option value="fixed">Fixa</option>
+            <option value="variable">Variável</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="entryGroup">Categoria</label>
+
+          <select id="entryGroup" required>
+            <option value="casa">Casa</option>
+            <option value="transporte">Transporte</option>
+            <option value="alimentacao">Alimentação</option>
+            <option value="lazer">Lazer</option>
+            <option value="saude">Saúde</option>
+            <option value="estudos">Estudos</option>
+            <option value="cartao">Cartão</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="entryTitle">Nome / Descrição</label>
+
+          <input
+            id="entryTitle"
+            type="text"
+            placeholder="Ex: Salário, Internet..."
+            required
+          >
+        </div>
+
+        <div class="field-pair">
+
+          <label class="field-block">
+            <span>Valor</span>
+            <input
+              id="entryAmount"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="0,00"
+              required
+            >
+          </label>
+
+          <label class="field-block">
+            <span>Data</span>
+            <input
+              id="entryDate"
+              type="date"
+              required
+            >
+          </label>
+
+        </div>
+
+        <div class="form-row status-row">
+          <label>
+            <input id="entryStatus" type="checkbox">
+            Recebido / Pago
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button
+            id="cancelBtn"
+            class="secondary"
+            type="button"
+          >
+            Cancelar
+          </button>
+
+          <button
+            class="primary"
+            type="submit"
+          >
+            Salvar
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
